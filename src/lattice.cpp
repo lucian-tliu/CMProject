@@ -5,7 +5,7 @@ Lattice::Lattice(size_t rows, size_t cols, std::string init_mode, int seed)
     if (init_mode == "cold") {
         matx.resize(rows * cols, 1);
         return;
-    }else if (init_mode == "heat") {
+    }else if (init_mode == "hot") {
         matx.resize(rows * cols);
         std::mt19937 rng_;
 

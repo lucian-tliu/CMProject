@@ -30,7 +30,7 @@ class Lattice {
         std::vector<int> matx;
 
     public:
-        Lattice(size_t rows, size_t cols, std::string init_mode = "heat", int seed = -1);
+        Lattice(size_t rows, size_t cols, std::string init_mode = "hot", int seed = -1);
         ~Lattice() = default;
         size_t getNumRows() const;
         size_t getNumCols() const;
