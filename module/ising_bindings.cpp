@@ -28,7 +28,7 @@ py::array_t<double> vector_to_ndarray(const std::vector<double>& vec) {
 PYBIND11_MODULE(ising_model, m) {
     py::class_<IsingSpins>(m, "IsingSpins")
         .def(py::init<size_t, size_t, double, std::string, int>(), 
-             py::arg("rows"), py::arg("cols"), py::arg("J"), py::arg("init_mode") = "heat", py::arg("seed") = -1)
+             py::arg("rows"), py::arg("cols"), py::arg("J"), py::arg("init_mode") = "hot", py::arg("seed") = -1)
         .def("getJ", &IsingSpins::getJ)
         .def("meanEnergy", &IsingSpins::meanEnergy)
         .def("meanMagnetization", &IsingSpins::meanMagnetization)
