@@ -10,7 +10,7 @@ class IsingSpins : public Lattice {
     private:
         double J;
     public:
-        IsingSpins(size_t rows, size_t cols, double J_val, std::string init_mode = "heat", int seed = -1);
+        IsingSpins(size_t rows, size_t cols, double J_val, std::string init_mode = "hot", int seed = -1);
         ~IsingSpins() = default;
         double getJ() const;
         double meanEnergy() const;
