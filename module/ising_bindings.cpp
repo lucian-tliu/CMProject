@@ -63,13 +63,13 @@ PYBIND11_MODULE(ising_model, m) {
     m.def("wolffStep", [&](IsingSpins& s, double kBT) {
         return wolffStep(s, kBT);
     }, py::arg("s"), py::arg("kBT"));
-    m.def("multipleSteps", [](IsingSpins& s, double kBT, size_t n_steps, const std::string& algorithm, bool record) {
-        auto result = multipleSteps(s, kBT, n_steps, algorithm, record);
+    m.def("multipleSteps", [](IsingSpins& s, double kBT, size_t n_steps, const std::string& algorithm, bool record, size_t lag) {
+        auto result = multipleSteps(s, kBT, n_steps, algorithm, record, lag);
         if (result.has_value()) {
             auto [energies, magnetizations, mean_cluster_size] = result.value();
             return py::make_tuple(vector_to_ndarray(energies), vector_to_ndarray(magnetizations), mean_cluster_size);
         } else {
             return py::make_tuple(py::none(), py::none(), py::none());
         }
-    }, py::arg("s"), py::arg("kBT"), py::arg("n_steps"), py::arg("algorithm"), py::arg("record") = false);
+    }, py::arg("s"), py::arg("kBT"), py::arg("n_steps"), py::arg("algorithm"), py::arg("record") = false, py::arg("lag") = 1);
 }
