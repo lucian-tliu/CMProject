@@ -3,3 +3,5 @@ matplotlib
 numba
 tqdm
 pybind11
+pytorch
+scikit-learn

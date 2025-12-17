@@ -11,12 +11,13 @@ Below is a description of the contents and functionalities of the main source fi
 - *flip_algorithms* : This file implements the single step Metropolis and Wolff flip. To make it more integrated, it also provides a function to do multiple steps of flip.
 - *ising_bindings* : This file defines the protocol for exposing the aforementioned classes and functions as Python interfaces.
 - *setup.py* : This file invokes pybind11 and the C++ compiler to compile the aforementioned source files into a Python third-party library.
+- *requirements.txt* : This file lists the Python third-party libraries required for running the Jupyter notebook.
+- *ising_sim.ipynb* : This file is the Jupyter notebook for running the simulation and analyzing the results.
 
 ## How to install and use
 
 To use this code, you need to have a working C++ compiler and Python environment with *requirements.txt* installed.
 
-Linux :
 ```bash
 cd /path/to/CMProject
 pip install -r requirements.txt
