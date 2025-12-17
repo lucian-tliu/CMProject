@@ -93,7 +93,7 @@ size_t wolffStep(IsingSpins& s, double kBT) {
 }
 
 std::optional<std::tuple<std::vector<double>, std::vector<double>, size_t>>
-multipleSteps(IsingSpins& s, double kBT, size_t n_steps, const std::string& algorithm, bool record) {
+multipleSteps(IsingSpins& s, double kBT, size_t n_steps, const std::string& algorithm, bool record, size_t lag = 1) {
     /*
      * Perform multiple steps of the specified algorithm (Metropolis or Wolff).
      * Optionally record mean energy and magnetization after each step.
@@ -104,25 +104,25 @@ multipleSteps(IsingSpins& s, double kBT, size_t n_steps, const std::string& algo
 
     // optionally reserve memory to save time
     if (record){
-        energies.resize(n_steps);
-        magnetizations.resize(n_steps);
+        energies.resize(n_steps / lag + 1);
+        magnetizations.resize(n_steps / lag + 1);
     }
 
     if (algorithm == "metropolis") {
         for (size_t step = 0; step < n_steps; step++) {
             metropolisStep(s, kBT);
-            if (record) {
-                energies[step] = s.meanEnergy();
-                magnetizations[step] = s.meanMagnetization();
+            if (record && step % lag == 0) {
+                energies[step / lag] = s.meanEnergy();
+                magnetizations[step / lag] = s.meanMagnetization();
             }
         }
     } else if (algorithm == "wolff") {
         size_t cluster_size = 0;
         for (size_t step = 0; step < n_steps; step++) {
             cluster_size += wolffStep(s, kBT);
-            if (record) {
-                energies[step] = s.meanEnergy();
-                magnetizations[step] = s.meanMagnetization();
+            if (record && step % lag == 0) {
+                energies[step / lag] = s.meanEnergy();
+                magnetizations[step / lag] = s.meanMagnetization();
             }
         }
         mean_cluster_size = cluster_size / n_steps;

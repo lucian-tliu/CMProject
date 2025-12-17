@@ -17,4 +17,4 @@ size_t wolffStep(IsingSpins& s, double kBT);
 
 std::optional<std::tuple<std::vector<double>, std::vector<double>, size_t>>
 multipleSteps(IsingSpins& s, double kBT, size_t n_steps, 
-              const std::string& algorithm, bool record);
+              const std::string& algorithm, bool record, size_t lag);
