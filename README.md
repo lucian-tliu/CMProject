@@ -1,5 +1,23 @@
 ## Introduction of the source code
 
+```
+.
+├── README.md
+├── requirements.txt
+├── ising_sim.ipynb
+├── include
+│   ├── flip_algorithm.hpp
+│   ├── isingspins.hpp
+│   └── lattice.hpp
+├──src
+│   ├── flip_algorithm.cpp
+│   ├── isingspins.cpp
+│   └── lattice.cpp
+└── module
+    ├── ising_bindings.cpp
+    └── setup.py
+```
+
 To balance high-performance computing with flexible configurability, the core numerical computation components of this project (including the Spins class, the Metropolis sampling algorithm, and the Wolff cluster update algorithm) are implemented in C++.
 
 Building upon this foundation, Python (via *ising_sim.ipynb*) is used to handle experimental workflow control, numerical analysis, and visualization.
