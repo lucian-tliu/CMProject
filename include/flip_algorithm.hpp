@@ -13,7 +13,7 @@
 #include <optional>
 
 void metropolisStep(IsingSpins& s, double kBT);
-size_t wolffStep(IsingSpins& s, double kBT);
+cluster_set wolffStep(IsingSpins& s, double kBT);
 
 std::optional<std::tuple<std::vector<double>, std::vector<double>, size_t>>
 multipleSteps(IsingSpins& s, double kBT, size_t n_steps, 

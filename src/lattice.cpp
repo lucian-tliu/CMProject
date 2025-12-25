@@ -41,7 +41,7 @@ void Lattice::flipSingleSpin(size_t row, size_t col) {
     matx[row * N_cols + col] *= -1;
 };
 
-void Lattice::flipSpins(std::unordered_set<std::pair<int, int>, PairHash>& cluster) {
+void Lattice::flipSpins(cluster_set& cluster) {
     for (const auto& [row, col] : cluster) {
         flipSingleSpin(row, col);
     }

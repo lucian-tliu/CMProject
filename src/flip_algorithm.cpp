@@ -31,7 +31,7 @@ void metropolisStep(IsingSpins& s, double kBT) {
     }
 }
 
-size_t wolffStep(IsingSpins& s, double kBT) {
+cluster_set wolffStep(IsingSpins& s, double kBT) {
     /*
      * Wolff step for Ising model simulation.
      * Grow a cluster of spins and flip them together.
@@ -56,16 +56,25 @@ size_t wolffStep(IsingSpins& s, double kBT) {
     std::deque<std::pair<int, int>> cluster_queue;
 
     // unordered_set is used for storing the cluster members
-    std::unordered_set<std::pair<int, int>, PairHash> cluster;
+    cluster_set cluster;
 
+    // raw stuctures is used for returning the cluster with original indices
+    // which will be useful for the site-percolation analysis
+    std::deque<std::pair<int, int>> cluster_queue_raw;
+    cluster_set cluster_raw;
+    
     cluster_queue.push_back({i, j});
+    cluster_queue_raw.push_back({i, j});
     cluster.insert({i, j});
+    cluster_raw.insert({i, j});
 
     // Grow the cluster
     while (!cluster_queue.empty()) {
         auto [x, y] = cluster_queue.front();
+        auto [x_raw, y_raw] = cluster_queue_raw.front();
         S = s(x, y);
         cluster_queue.pop_front();
+        cluster_queue_raw.pop_front();
 
         std::vector<std::pair<int, int>> neighbors = {
             { (x + 1) % N_rows, y },
@@ -74,23 +83,37 @@ size_t wolffStep(IsingSpins& s, double kBT) {
             { x, (y - 1 + N_cols) % N_cols }
         };
 
-        for (const auto& [nx, ny] : neighbors) {
+        std::vector<std::pair<int, int>> neighbors_raw = {
+            { (x_raw + 1), y_raw },
+            { (x_raw - 1), y_raw },
+            { x_raw, (y_raw + 1) },
+            { x_raw, (y_raw - 1) }
+        };
+
+        for (size_t n = 0; n < neighbors.size(); n++) {
+            auto [nx, ny] = neighbors[n];
+            auto [nx_raw, ny_raw] = neighbors_raw[n];
             if (J > 0.0 && s(nx, ny) == S && cluster.find({nx, ny}) == cluster.end()) {
                 if (uni_real(rng_) < P_add) {
                     cluster.insert({nx, ny});
+                    cluster_raw.insert({nx_raw, ny_raw});
                     cluster_queue.push_back({nx, ny});
+                    cluster_queue_raw.push_back({nx_raw, ny_raw});
                 }
             } else if (J < 0.0 && s(nx, ny) == -S && cluster.find({nx, ny}) == cluster.end()) {
                 if (uni_real(rng_) < P_add) {
                     cluster.insert({nx, ny});
+                    cluster_raw.insert({nx_raw, ny_raw});
+                    cluster_queue_raw.push_back({nx_raw, ny_raw});
                     cluster_queue.push_back({nx, ny});
                 }
             }
         }
     }
     s.flipSpins(cluster);
-    return cluster.size();
+    return cluster_raw;
 }
+
 
 std::optional<std::tuple<std::vector<double>, std::vector<double>, size_t>>
 multipleSteps(IsingSpins& s, double kBT, size_t n_steps, const std::string& algorithm, bool record, size_t lag = 1) {
@@ -119,7 +142,7 @@ multipleSteps(IsingSpins& s, double kBT, size_t n_steps, const std::string& algo
     } else if (algorithm == "wolff") {
         size_t cluster_size = 0;
         for (size_t step = 0; step < n_steps; step++) {
-            cluster_size += wolffStep(s, kBT);
+            cluster_size += wolffStep(s, kBT).size();
             if (record && step % lag == 0) {
                 energies[step / lag] = s.meanEnergy();
                 magnetizations[step / lag] = s.meanMagnetization();

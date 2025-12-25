@@ -18,6 +18,8 @@ struct PairHash {
     }
 };
 
+using cluster_set = std::unordered_set<std::pair<int, int>, PairHash>;
+
 class Lattice {
     /*
      * Lattice class for Ising model simulation.
@@ -35,7 +37,7 @@ class Lattice {
         size_t getNumRows() const;
         size_t getNumCols() const;
         void flipSingleSpin(size_t row, size_t col);
-        void flipSpins(std::unordered_set<std::pair<int, int>, PairHash>& cluster);
+        void flipSpins(cluster_set& cluster);
         int getSpin(size_t idx) const;
         int operator()(size_t row, size_t col) const;
         friend std::ostream& operator<<(std::ostream& os, const Lattice& lattice);
