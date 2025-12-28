@@ -25,7 +25,6 @@ class Lattice {
      * Lattice class for Ising model simulation.
      * Only used to store spin configurations internally and provide basic flip operations.
      */
-
     private:
         size_t N_rows;
         size_t N_cols;

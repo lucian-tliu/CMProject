@@ -60,6 +60,7 @@ PYBIND11_MODULE(ising_model, m) {
     m.doc() = "Ising model simulation bindings";
 
     m.def("metropolisStep", &metropolisStep, py::arg("s"), py::arg("kBT"));
+
     m.def("wolffStep", [&](IsingSpins& s, double kBT) {
         cluster_set cset = wolffStep(s, kBT);
 
@@ -69,6 +70,7 @@ PYBIND11_MODULE(ising_model, m) {
         }
         return py_set;
     }, py::arg("s"), py::arg("kBT"));
+    
     m.def("multipleSteps", [](IsingSpins& s, double kBT, size_t n_steps, const std::string& algorithm, bool record, size_t lag) {
         auto result = multipleSteps(s, kBT, n_steps, algorithm, record, lag);
         if (result.has_value()) {
