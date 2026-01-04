@@ -34,7 +34,7 @@ Below is a description of the contents and functionalities of the main source fi
 
 ## How to install and use
 
-To use this code, you need to have a working C++ compiler and Python environment with *requirements.txt* installed.
+To run this project, you need to have a working C++ compiler and Python environment with *requirements.txt* installed.
 
 ```bash
 cd /path/to/CMProject
@@ -43,4 +43,11 @@ cd /path/to/CMProject/module
 pip install -e .
 ```
 
-You are supposed to make a new environment for this project to avoid dependency conflicts or environment pollution.
+or
+
+```bash
+python setup.py build_ext --inplace
+```
+
+You are supposed to create a new environment for this project to avoid dependency conflicts or environment pollution.
+
